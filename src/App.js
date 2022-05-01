@@ -1,23 +1,32 @@
-import Header from './components/Header';
-import FeebackItem from "./components/FeedbackItem";
-import PropTypes from 'prop-types'
+import Header from './components/Header'
+import FeedbackList from './components/FeedbackList'
+import { v4 as uuidv4 } from 'uuid'
+import FeedbackData from './data/FeedbackData'
+import FeedbackStats from './components/FeedbackStats'
+import FeedbackForm from './components/FeedbackForm'
+import { useState } from 'react'
 function App() {
+  const [feedback, setFeedback] = useState(FeedbackData)
+  const deleteFeedback = (id) => {
+    if (window.confirm('Are you sure you want to delete?')) {
+      setFeedback(feedback.filter((item) => item.id !== id))
+    }
+  }
+  const addFeedback = (newFeedback) => {
+    newFeedback.id = uuidv4()
+    setFeedback([newFeedback, ...feedback])
+    
+  }
   return (
     <>
-      <Header text="My App"/>
+      <Header />
       <div className='container'>
-        <FeebackItem />
+        <FeedbackForm handleAdd={addFeedback} />
+        <FeedbackStats feedback={feedback} />
+        <FeedbackList feedback={feedback} handleDelete={deleteFeedback} />
       </div>
     </>
-  );
+  )
 }
 
-Header.defaultProps ={
-
-}
-
-Header.propTypes = {
-  text: PropTypes.string
-}
-
-export default App;
+export default App
