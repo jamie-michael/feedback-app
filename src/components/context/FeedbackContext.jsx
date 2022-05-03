@@ -23,6 +23,7 @@ export const FeedbackProvider = ({ children }) => {
     setFeedback([newFeedback, ...feedback])
   }
 
+  
   // Delete feedback
   const deleteFeedback = (id) => {
     if (window.confirm('Are you sure you want to delete?')) {
