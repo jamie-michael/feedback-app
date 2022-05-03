@@ -2,6 +2,8 @@ import Card from './shared/Card'
 import Button from './shared/Button'
 import { useState } from 'react'
 import RatingSelect from './RatingSelect'
+import { motion, AnimatePresence } from 'framer-motion'
+
 
 function FeedbackForm({ handleAdd }) {
   const [text, setText] = useState('')
@@ -36,28 +38,36 @@ function FeedbackForm({ handleAdd }) {
     }
   }
   return (
-    <Card>
-      <form onSubmit={handleSubmit}>
-        <h2>How would you rate your service with us</h2>
-        <RatingSelect
-          select={(rating) => {
-            setRating(rating)
-          }}
-        />
-        <div className='input-group'>
-          <input
-            onChange={handleTextChange}
-            type='text'
-            placeholder='Write a review'
-            value={text}
-          />
-          <Button type='submit' isDisabled={btnDisabled}>
-            Send
-          </Button>
-        </div>
-        {message && <div className='message'>{message}</div>}
-      </form>
-    </Card>
+    <AnimatePresence>
+      <Card>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <form onSubmit={handleSubmit}>
+            <h2>How would you rate your service with us</h2>
+            <RatingSelect
+              select={(rating) => {
+                setRating(rating)
+              }}
+            />
+            <div className='input-group'>
+              <input
+                onChange={handleTextChange}
+                type='text'
+                placeholder='Write a review'
+                value={text}
+              />
+              <Button type='submit' isDisabled={btnDisabled}>
+                Send
+              </Button>
+            </div>
+            {message && <div className='message'>{message}</div>}
+          </form>
+        </motion.div>
+      </Card>
+    </AnimatePresence>
   )
 }
 
