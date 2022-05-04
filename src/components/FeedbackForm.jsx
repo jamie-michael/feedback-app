@@ -1,9 +1,10 @@
 import Card from './shared/Card'
 import Button from './shared/Button'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import RatingSelect from './RatingSelect'
 import { motion, AnimatePresence } from 'framer-motion'
 import FeedbackContext from './context/FeedbackContext'
+
 
 function FeedbackForm() {
   const [text, setText] = useState('')
@@ -11,11 +12,19 @@ function FeedbackForm() {
   const [message, setMessage] = useState('')
   const [rating, setRating] = useState(10)
 
-  const { addFeedback } = useContext(FeedbackContext)
+  const { addFeedback, feedbackEdit, updateFeedback } = useContext(FeedbackContext)
+
+  useEffect(() => {
+    if (feedbackEdit.edit === true) {
+      setBtnDisabled(false)
+      setText(feedbackEdit.item.text)
+      setRating(feedbackEdit.item.rating)
+    }
+  },[feedbackEdit])
 
   const handleTextChange = (e) => {
     if (text === '') {
-      setBtnDisabled(true)
+      setBtnDisabled(true) 
       setMessage(null)
     } else if (text !== '' && text.trim().length <= 10) {
       setMessage('Text must be at least 10 characters')
@@ -34,7 +43,13 @@ function FeedbackForm() {
         text,
         rating,
       }
-      addFeedback(newFeedback)
+      
+      if (feedbackEdit.edit === true) {
+        updateFeedback(feedbackEdit.item.id, newFeedback)
+      }
+      else {
+        addFeedback(newFeedback)
+      }
 
       setText('')
     }
