@@ -9,4 +9,4 @@ const AboutIconLink = () => {
     </div>
   )
 }
-export default AboutIconLink
+export default AboutIconLink 
